@@ -1,0 +1,76 @@
+// app/deposit/page.js
+'use client'
+import ProtectedRoute from '../../components/ProtectedRoute'
+import { useState } from 'react'
+
+export default function Deposit() {
+  const [amount, setAmount] = useState('')
+  const [copied, setCopied] = useState(false)
+
+  const walletAddress = '0x41ef699B7C10C04a6f7c47D0AB0f19CA8398583a'
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(walletAddress)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  return (
+    <ProtectedRoute>
+      <div className="container mx-auto px-4 py-8 max-w-2xl">
+        <h1 className="text-3xl font-bold mb-2">Deposit USDT</h1>
+        <p className="text-gray-400 mb-8">Add funds to your investment account</p>
+
+        <div className="card">
+          <div className="mb-6">
+            <label className="block text-sm font-medium mb-2">Deposit Amount (USDT)</label>
+            <input
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter amount"
+              min="5"
+            />
+            <p className="text-sm text-gray-400 mt-2">Minimum deposit: 5 USDT</p>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg p-6 mb-6">
+            <h3 className="font-semibold mb-4">Send USDT (BEP-20) to:</h3>
+            
+            <div className="mb-4">
+              <p className="text-sm text-gray-400 mb-2">Wallet Address:</p>
+              <div className="flex items-center space-x-2">
+                <code className="bg-black px-3 py-2 rounded flex-1 overflow-x-auto">
+                  {walletAddress}
+                </code>
+                <button
+                  onClick={copyToClipboard}
+                  className="btn-secondary whitespace-nowrap"
+                >
+                  {copied ? 'Copied!' : 'Copy'}
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-2 text-sm text-gray-400">
+              <p>⚠️ Only send USDT on BEP-20 network</p>
+              <p>⚠️ Do not send other cryptocurrencies to this address</p>
+              <p>⚠️ Deposits will be credited after 3 network confirmations</p>
+            </div>
+          </div>
+
+          <div className="bg-yellow-600 bg-opacity-20 border border-yellow-600 rounded-lg p-4">
+            <p className="text-yellow-300 text-sm">
+              After making your deposit, contact customer support with your transaction hash for verification:
+            </p>
+            <div className="mt-2 space-y-1 text-sm">
+              <p>📧 Email: elorabethel125@gmail.com</p>
+              <p>✈️ Telegram: @6071876936</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ProtectedRoute>
+  )
+}

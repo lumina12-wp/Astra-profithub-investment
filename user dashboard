@@ -1,0 +1,115 @@
+// app/dashboard/page.js
+'use client'
+import ProtectedRoute from '../../components/ProtectedRoute'
+import { useAuth } from '../../components/AuthContext'
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+
+export default function Dashboard() {
+  const { user, updateUser } = useAuth()
+  const [dailyBonusClaimed, setDailyBonusClaimed] = useState(false)
+
+  const claimDailyBonus = () => {
+    if (!dailyBonusClaimed) {
+      updateUser({
+        balance: user.balance + 0.1,
+        activeDays: user.activeDays + 1
+      })
+      setDailyBonusClaimed(true)
+      alert('Daily bonus of 0.1 USDT claimed!')
+    }
+  }
+
+  if (!user) return null
+
+  return (
+    <ProtectedRoute>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+        
+        {/* Quick Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <div className="card text-center">
+            <h3 className="text-2xl font-bold text-accent mb-2">{user.balance || 0} USDT</h3>
+            <p className="text-gray-400">Total Balance</p>
+          </div>
+          <div className="card text-center">
+            <h3 className="text-2xl font-bold text-accent mb-2">{user.referralBonus || 0} USDT</h3>
+            <p className="text-gray-400">Referral Bonus</p>
+          </div>
+          <div className="card text-center">
+            <h3 className="text-2xl font-bold text-accent mb-2">{user.referrals || 0}</h3>
+            <p className="text-gray-400">Total Referrals</p>
+          </div>
+          <div className="card text-center">
+            <h3 className="text-2xl font-bold text-accent mb-2">{user.activeDays || 0}</h3>
+            <p className="text-gray-400">Active Days</p>
+          </div>
+        </div>
+
+        {/* Daily Bonus */}
+        <div className="card mb-8">
+          <h2 className="text-xl font-semibold mb-4">Daily Sign-in Bonus</h2>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-gray-400">Claim your daily 0.1 USDT bonus</p>
+              <p className="text-sm text-gray-500">Active days required for withdrawals</p>
+            </div>
+            <button
+              onClick={claimDailyBonus}
+              disabled={dailyBonusClaimed}
+              className="btn-primary disabled:opacity-50"
+            >
+              {dailyBonusClaimed ? 'Claimed Today' : 'Claim Bonus'}
+            </button>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Link href="/deposit" className="card text-center hover:border-accent transition-colors">
+            <div className="text-3xl mb-4">💰</div>
+            <h3 className="text-lg font-semibold mb-2">Deposit</h3>
+            <p className="text-gray-400">Add funds to your account</p>
+          </Link>
+          
+          <Link href="/invest" className="card text-center hover:border-accent transition-colors">
+            <div className="text-3xl mb-4">📈</div>
+            <h3 className="text-lg font-semibold mb-2">Invest</h3>
+            <p className="text-gray-400">Choose VIP plans</p>
+          </Link>
+          
+          <div className="card text-center">
+            <div className="text-3xl mb-4">👥</div>
+            <h3 className="text-lg font-semibold mb-2">Refer & Earn</h3>
+            <p className="text-sm text-gray-400 mb-2">Your code: <strong>{user.referralCode}</strong></p>
+            <p className="text-xs text-gray-500">Earn 0.5 USDT per referral</p>
+          </div>
+        </div>
+
+        {/* Recent Investments */}
+        <div className="card">
+          <h2 className="text-xl font-semibold mb-4">Recent Investments</h2>
+          {user.investments && user.investments.length > 0 ? (
+            <div className="space-y-4">
+              {user.investments.map((investment, index) => (
+                <div key={index} className="flex justify-between items-center p-4 bg-gray-800 rounded-lg">
+                  <div>
+                    <h4 className="font-semibold">{investment.plan}</h4>
+                    <p className="text-sm text-gray-400">Amount: {investment.amount} USDT</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-accent">Returns: {investment.returns} USDT</p>
+                    <p className="text-sm text-gray-400">{investment.startDate}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-center py-8">No investments yet</p>
+          )}
+        </div>
+      </div>
+    </ProtectedRoute>
+  )
+}

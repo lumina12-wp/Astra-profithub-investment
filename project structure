@@ -1,0 +1,30 @@
+astra-profit-hub/
+├── package.json
+├── tailwind.config.js
+├── postcss.config.js
+├── next.config.js
+├── app/
+│   ├── layout.js
+│   ├── page.js
+│   ├── about/
+│   ├── contact/
+│   ├── faq/
+│   ├── privacy/
+│   ├── account/
+│   │   ├── signup/
+│   │   ├── signin/
+│   │   └── logout/
+│   ├── dashboard/
+│   ├── deposit/
+│   ├── invest/
+│   └── admin/
+│       ├── login/
+│       └── dashboard/
+├── components/
+│   ├── Header.js
+│   ├── Footer.js
+│   ├── AuthContext.js
+│   ├── ProtectedRoute.js
+│   └── AdminProtectedRoute.js
+└── lib/
+    └── auth.js

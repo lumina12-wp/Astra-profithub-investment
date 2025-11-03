@@ -1,0 +1,197 @@
+// app/privacy/page.js
+export default function Privacy() {
+  return (
+    <div className="min-h-screen py-12">
+      <div className="container mx-auto px-4 max-w-4xl">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">Privacy Policy</h1>
+          <p className="text-xl text-gray-300">
+            Last updated: December 2024
+          </p>
+        </div>
+
+        {/* Content */}
+        <div className="card space-y-8">
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">1. Information We Collect</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                We collect information that you provide directly to us when you use Astra Profit Hub, including:
+              </p>
+              <ul className="list-disc list-inside space-y-2 ml-4">
+                <li>Personal identification information (name, email address, phone number)</li>
+                <li>Account credentials and security information</li>
+                <li>Financial information for investment purposes</li>
+                <li>Transaction history and investment data</li>
+                <li>Communication records with our support team</li>
+                <li>Technical data including IP addresses and device information</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">2. How We Use Your Information</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>We use the collected information for the following purposes:</p>
+              <ul className="list-disc list-inside space-y-2 ml-4">
+                <li>To create and maintain your investment account</li>
+                <li>To process your investments and calculate returns</li>
+                <li>To provide customer support and respond to inquiries</li>
+                <li>To send important notifications about your account</li>
+                <li>To improve our platform and services</li>
+                <li>To comply with legal obligations and prevent fraud</li>
+                <li>To personalize your investment experience</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">3. Data Protection & Security</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                We implement robust security measures to protect your personal information:
+              </p>
+              <ul className="list-disc list-inside space-y-2 ml-4">
+                <li>Encryption of sensitive data in transit and at rest</li>
+                <li>Secure socket layer (SSL) technology for all transactions</li>
+                <li>Regular security audits and vulnerability assessments</li>
+                <li>Cold storage for the majority of crypto assets</li>
+                <li>Multi-factor authentication for account access</li>
+                <li>Regular employee security training</li>
+              </ul>
+              <p>
+                While we implement these security measures, no method of transmission over the Internet 
+                or electronic storage is 100% secure. We cannot guarantee absolute security but we strive 
+                to use commercially acceptable means to protect your personal information.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">4. Information Sharing</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                We do not sell, trade, or rent your personal identification information to others. 
+                We may share generic aggregated demographic information not linked to any personal 
+                identification information regarding visitors and users with our business partners 
+                and trusted affiliates for the purposes outlined above.
+              </p>
+              <p>
+                We may share your information in the following circumstances:
+              </p>
+              <ul className="list-disc list-inside space-y-2 ml-4">
+                <li>With your explicit consent</li>
+                <li>To comply with legal obligations or court orders</li>
+                <li>To protect our rights, property, or safety</li>
+                <li>In connection with a business transfer or merger</li>
+                <li>With service providers who assist our operations (under strict confidentiality)</li>
+              </ul>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">5. Your Rights</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>You have the right to:</p>
+              <ul className="list-disc list-inside space-y-2 ml-4">
+                <li>Access and receive a copy of your personal data</li>
+                <li>Rectify or update inaccurate personal information</li>
+                <li>Request deletion of your personal data</li>
+                <li>Restrict or object to processing of your data</li>
+                <li>Data portability</li>
+                <li>Withdraw consent at any time</li>
+              </ul>
+              <p>
+                To exercise these rights, please contact us at elorabethel125@gmail.com. 
+                We will respond to your request within 30 days.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">6. Cookies & Tracking</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                We use cookies and similar tracking technologies to track activity on our platform 
+                and hold certain information. Cookies are files with a small amount of data which 
+                may include an anonymous unique identifier.
+              </p>
+              <p>
+                You can instruct your browser to refuse all cookies or to indicate when a cookie 
+                is being sent. However, if you do not accept cookies, you may not be able to use 
+                some portions of our platform.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">7. International Transfers</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                Your information may be transferred to — and maintained on — computers located 
+                outside of your state, province, country, or other governmental jurisdiction where 
+                the data protection laws may differ from those of your jurisdiction.
+              </p>
+              <p>
+                If you are located outside and choose to provide information to us, please note 
+                that we transfer the data to our servers and process it there. Your consent to 
+                this Privacy Policy followed by your submission of such information represents 
+                your agreement to that transfer.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">8. Children's Privacy</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                Our platform is not intended for use by children under the age of 18 ("Children"). 
+                We do not knowingly collect personally identifiable information from children under 18. 
+                If you become aware that a child has provided us with personal data, please contact us. 
+                If we become aware that we have collected personal data from children without verification 
+                of parental consent, we take steps to remove that information from our servers.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">9. Changes to This Policy</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                We may update our Privacy Policy from time to time. We will notify you of any changes 
+                by posting the new Privacy Policy on this page and updating the "Last updated" date.
+              </p>
+              <p>
+                You are advised to review this Privacy Policy periodically for any changes. Changes 
+                to this Privacy Policy are effective when they are posted on this page.
+              </p>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold mb-4 text-accent">10. Contact Us</h2>
+            <div className="text-gray-300 space-y-4">
+              <p>
+                If you have any questions about this Privacy Policy, please contact us:
+              </p>
+              <div className="bg-gray-800 p-4 rounded-lg">
+                <p>Email: elorabethel125@gmail.com</p>
+                <p>Telegram: @6071876936</p>
+                <p>Response Time: Within 24 hours</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        {/* Acceptance */}
+        <div className="card mt-8 text-center bg-primary bg-opacity-20">
+          <p className="text-lg">
+            By using Astra Profit Hub, you signify your acceptance of this Privacy Policy. 
+            If you do not agree to this policy, please do not use our platform.
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}

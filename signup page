@@ -1,0 +1,156 @@
+// app/account/signup/page.js
+'use client'
+import { useState } from 'react'
+import { useAuth } from '../../../components/AuthContext'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+
+export default function SignUp() {
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    referralCode: ''
+  })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
+  const router = useRouter()
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match')
+      setLoading(false)
+      return
+    }
+
+    // Simulate API call
+    try {
+      const userData = {
+        id: Date.now(),
+        username: formData.username,
+        email: formData.email,
+        balance: 0,
+        referralBonus: 0,
+        referrals: 0,
+        activeDays: 0,
+        investments: [],
+        referralCode: Math.random().toString(36).substr(2, 8).toUpperCase()
+      }
+      
+      login(userData)
+      router.push('/dashboard')
+    } catch (err) {
+      setError('Registration failed. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div className="card max-w-md w-full">
+        <h1 className="text-3xl font-bold text-center mb-8">Create Account</h1>
+        
+        {error && (
+          <div className="bg-red-600 text-white p-3 rounded-lg mb-4">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Username</label>
+            <input
+              type="text"
+              name="username"
+              required
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter your username"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Email</label>
+            <input
+              type="email"
+              name="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter your email"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Password</label>
+            <input
+              type="password"
+              name="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter your password"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Confirm Password</label>
+            <input
+              type="password"
+              name="confirmPassword"
+              required
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Confirm your password"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Referral Code (Optional)</label>
+            <input
+              type="text"
+              name="referralCode"
+              value={formData.referralCode}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter referral code"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full btn-primary py-3 disabled:opacity-50"
+          >
+            {loading ? 'Creating Account...' : 'Create Account'}
+          </button>
+        </form>
+
+        <p className="text-center mt-6 text-gray-400">
+          Already have an account?{' '}
+          <Link href="/account/signin" className="text-accent hover:underline">
+            Sign In
+          </Link>
+        </p>
+      </div>
+    </div>
+  )
+}

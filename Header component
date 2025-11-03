@@ -1,0 +1,53 @@
+// components/Header.js
+'use client'
+import Link from 'next/link'
+import { useAuth } from './AuthContext'
+
+export default function Header() {
+  const { user, logout } = useAuth()
+
+  return (
+    <header className="bg-primary border-b border-gray-800">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex justify-between items-center">
+          <Link href="/" className="text-2xl font-bold text-white">
+            Astra Profit Hub
+          </Link>
+          
+          <nav className="hidden md:flex space-x-6">
+            <Link href="/" className="hover:text-accent transition-colors">Home</Link>
+            <Link href="/about" className="hover:text-accent transition-colors">About</Link>
+            <Link href="/invest" className="hover:text-accent transition-colors">Invest</Link>
+            <Link href="/contact" className="hover:text-accent transition-colors">Contact</Link>
+            <Link href="/faq" className="hover:text-accent transition-colors">FAQ</Link>
+          </nav>
+
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <>
+                <Link href="/dashboard" className="hover:text-accent transition-colors">
+                  Dashboard
+                </Link>
+                <button 
+                  onClick={logout}
+                  className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/account/signin" className="hover:text-accent transition-colors">
+                  Sign In
+                </Link>
+                <Link href="/account/signup" className="btn-primary">
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </header>
+  )
+}

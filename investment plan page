@@ -1,0 +1,146 @@
+// app/invest/page.js
+'use client'
+import ProtectedRoute from '../../components/ProtectedRoute'
+import { useAuth } from '../../components/AuthContext'
+import { useState } from 'react'
+
+const investmentPlans = [
+  {
+    id: 1,
+    name: 'VIP 1',
+    investment: 5,
+    duration: 10,
+    dailyReturn: 1,
+    rechargeBonus: 1,
+    totalReturn: 11
+  },
+  {
+    id: 2,
+    name: 'VIP 2',
+    investment: 10,
+    duration: 10,
+    dailyReturn: 2,
+    rechargeBonus: 2,
+    totalReturn: 22
+  },
+  {
+    id: 3,
+    name: 'VIP 3',
+    investment: 15,
+    duration: 10,
+    dailyReturn: 3,
+    rechargeBonus: 3,
+    totalReturn: 33
+  },
+  {
+    id: 4,
+    name: 'VIP 4',
+    investment: 20,
+    duration: 10,
+    dailyReturn: 5,
+    rechargeBonus: 5,
+    totalReturn: 55,
+    popular: true
+  },
+  {
+    id: 5,
+    name: 'VIP 5',
+    investment: 30,
+    duration: 10,
+    dailyReturn: 6,
+    rechargeBonus: 5,
+    totalReturn: 65
+  }
+]
+
+export default function Invest() {
+  const { user, updateUser } = useAuth()
+  const [selectedPlan, setSelectedPlan] = useState(null)
+
+  const handleInvest = (plan) => {
+    if (user.balance < plan.investment) {
+      alert('Insufficient balance. Please deposit first.')
+      return
+    }
+
+    const newInvestment = {
+      plan: plan.name,
+      amount: plan.investment,
+      startDate: new Date().toISOString().split('T')[0],
+      returns: 0,
+      dailyReturn: plan.dailyReturn,
+      daysRemaining: plan.duration
+    }
+
+    const updatedUser = {
+      ...user,
+      balance: user.balance - plan.investment,
+      investments: [...(user.investments || []), newInvestment]
+    }
+
+    updateUser(updatedUser)
+    alert(`Successfully invested in ${plan.name}!`)
+    setSelectedPlan(null)
+  }
+
+  return (
+    <ProtectedRoute>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-2">Investment Plans</h1>
+        <p className="text-gray-400 mb-8">Choose from our proven VIP investment plans</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {investmentPlans.map((plan) => (
+            <div 
+              key={plan.id}
+              className={`card relative ${
+                plan.popular ? 'border-2 border-gold' : ''
+              }`}
+            >
+              {plan.popular && (
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-gold text-primary px-4 py-1 rounded-full text-sm font-semibold">
+                    Most Popular
+                  </span>
+                </div>
+              )}
+              
+              <h3 className="text-2xl font-bold text-center mb-4">{plan.name}</h3>
+              
+              <div className="text-center mb-6">
+                <span className="text-4xl font-bold text-accent">{plan.investment}</span>
+                <span className="text-lg"> USDT</span>
+              </div>
+
+              <div className="space-y-3 mb-6">
+                <div className="flex justify-between">
+                  <span>Duration:</span>
+                  <span className="font-semibold">{plan.duration} days</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Daily Return:</span>
+                  <span className="font-semibold text-accent">{plan.dailyReturn} USDT</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Recharge Bonus:</span>
+                  <span className="font-semibold">{plan.rechargeBonus} USDT</span>
+                </div>
+                <div className="flex justify-between border-t border-gray-700 pt-3">
+                  <span>Total Return:</span>
+                  <span className="font-bold text-accent">{plan.totalReturn} USDT</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleInvest(plan)}
+                className="w-full btn-primary py-3"
+              >
+                Invest Now
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </ProtectedRoute>
+  )
+}

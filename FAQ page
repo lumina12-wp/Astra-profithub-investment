@@ -1,0 +1,222 @@
+// app/faq/page.js
+'use client'
+import { useState } from 'react'
+
+const faqCategories = {
+  general: [
+    {
+      question: "What is Astra Profit Hub?",
+      answer: "Astra Profit Hub is a premier crypto investment platform that offers VIP investment plans with daily returns. We use advanced trading algorithms and market strategies to generate consistent profits for our investors."
+    },
+    {
+      question: "How do I get started?",
+      answer: "Simply create an account, deposit USDT, choose your preferred VIP investment plan, and start earning daily returns. The process takes less than 5 minutes to complete."
+    },
+    {
+      question: "Is there a minimum investment?",
+      answer: "Yes, the minimum investment is 5 USDT for our VIP 1 plan. You can start with this amount and gradually upgrade to higher plans as you become more comfortable."
+    }
+  ],
+  investments: [
+    {
+      question: "How do the VIP investment plans work?",
+      answer: "Each VIP plan has a fixed investment amount, duration (10 days), daily return rate, and recharge bonus. Your returns are calculated daily and added to your account balance automatically."
+    },
+    {
+      question: "What are the exact VIP plan details?",
+      answer: "VIP 1: 5 USDT, 1 USDT daily return, 1 USDT bonus, total 11 USDT. VIP 2: 10 USDT, 2 USDT daily, 2 USDT bonus, total 22 USDT. VIP 3: 15 USDT, 3 USDT daily, 3 USDT bonus, total 33 USDT. VIP 4: 20 USDT, 5 USDT daily, 5 USDT bonus, total 55 USDT. VIP 5: 30 USDT, 6 USDT daily, 5 USDT bonus, total 65 USDT."
+    },
+    {
+      question: "When do I receive my daily returns?",
+      answer: "Daily returns are automatically credited to your account balance every 24 hours from the time of your investment. You can monitor them in your dashboard."
+    },
+    {
+      question: "Can I invest in multiple plans at once?",
+      answer: "Yes, you can invest in multiple VIP plans simultaneously. Each investment operates independently with its own return schedule."
+    }
+  ],
+  deposits: [
+    {
+      question: "How do I deposit funds?",
+      answer: "Go to the Deposit page, enter the amount, and send USDT (BEP-20) to our wallet address: 0x41ef699B7C10C04a6f7c47D0AB0f19CA8398583a. After 3 network confirmations, contact support with your transaction hash."
+    },
+    {
+      question: "What is the minimum deposit?",
+      answer: "The minimum deposit is 5 USDT. There is no maximum deposit limit."
+    },
+    {
+      question: "Which cryptocurrency do you accept?",
+      answer: "We currently only accept USDT on the BEP-20 network. Do not send other cryptocurrencies or use other networks as funds may be lost."
+    },
+    {
+      question: "How long do deposits take to process?",
+      answer: "Deposits typically require 3 network confirmations (approximately 5-15 minutes). After confirmation, contact support for manual verification and crediting."
+    }
+  ],
+  withdrawals: [
+    {
+      question: "How do I withdraw my earnings?",
+      answer: "Go to your dashboard, click on Withdraw, enter the amount (minimum 5 USDT), and provide your USDT wallet address. Withdrawals are processed manually within 24 hours."
+    },
+    {
+      question: "What are the withdrawal requirements?",
+      answer: "Minimum withdrawal: 5 USDT. You must have actively signed in for at least 5 days. For referral bonuses, you need at least 5 referrals who have purchased VIP plans."
+    },
+    {
+      question: "Are there any withdrawal fees?",
+      answer: "Withdrawal fees are covered by the platform for amounts above the minimum. There are no hidden fees for standard withdrawals."
+    },
+    {
+      question: "How long do withdrawals take?",
+      answer: "Withdrawals are processed manually within 24 hours. During high volume periods, it may take up to 48 hours. You'll receive notification when processed."
+    }
+  ],
+  referrals: [
+    {
+      question: "How does the referral system work?",
+      answer: "You earn 0.5 USDT for each person who signs up using your referral code and makes a deposit. Your referral bonus is credited immediately when they deposit."
+    },
+    {
+      question: "What are the referral withdrawal requirements?",
+      answer: "Minimum referral withdrawal: 10 USDT. You must have at least 5 referrals who have purchased VIP plans. Regular withdrawal requirements also apply."
+    },
+    {
+      question: "Where can I find my referral code?",
+      answer: "Your unique referral code is displayed in your dashboard. Share this code with friends and family to start earning referral bonuses."
+    },
+    {
+      question: "Is there a limit to referral earnings?",
+      answer: "No, there's no limit to how much you can earn through referrals. The more active investors you refer, the more you earn."
+    }
+  ],
+  security: [
+    {
+      question: "Is my investment secure?",
+      answer: "Yes, we employ advanced security measures including cold storage for funds, SSL encryption, and regular security audits to protect your investments."
+    },
+    {
+      question: "What happens if the market crashes?",
+      answer: "Our diversified trading strategies and risk management protocols are designed to withstand market volatility and protect investor funds during downturns."
+    },
+    {
+      question: "Is my personal information safe?",
+      answer: "We adhere to strict privacy policies and never share your personal information with third parties. All data is encrypted and securely stored."
+    }
+  ]
+}
+
+export default function FAQ() {
+  const [activeCategory, setActiveCategory] = useState('general')
+  const [openItems, setOpenItems] = useState({})
+
+  const toggleItem = (index) => {
+    setOpenItems(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }))
+  }
+
+  return (
+    <div className="min-h-screen py-12">
+      <div className="container mx-auto px-4">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6">Frequently Asked Questions</h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Find answers to common questions about investing, withdrawals, referrals, and more.
+          </p>
+        </div>
+
+        {/* Category Tabs */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {Object.keys(faqCategories).map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
+                activeCategory === category 
+                  ? 'bg-accent text-white' 
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              }`}
+            >
+              {category.charAt(0).toUpperCase() + category.slice(1)}
+            </button>
+          ))}
+        </div>
+
+        {/* FAQ Items */}
+        <div className="max-w-4xl mx-auto">
+          <div className="space-y-4">
+            {faqCategories[activeCategory].map((item, index) => (
+              <div key={index} className="card">
+                <button
+                  onClick={() => toggleItem(index)}
+                  className="w-full text-left flex justify-between items-center p-4"
+                >
+                  <h3 className="text-lg font-semibold pr-4">{item.question}</h3>
+                  <span className="text-accent text-xl flex-shrink-0">
+                    {openItems[index] ? '−' : '+'}
+                  </span>
+                </button>
+                {openItems[index] && (
+                  <div className="px-4 pb-4">
+                    <p className="text-gray-300 leading-relaxed">{item.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Support CTA */}
+        <div className="text-center mt-16">
+          <div className="card max-w-2xl mx-auto bg-gradient-to-r from-primary to-purple-900">
+            <h2 className="text-3xl font-bold mb-4">Still Have Questions?</h2>
+            <p className="text-xl text-gray-300 mb-6">
+              Our support team is ready to help you 24/7
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+              <a 
+                href="https://t.me/6071876936" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="btn-primary px-8 py-3"
+              >
+                Contact on Telegram
+              </a>
+              <a 
+                href="mailto:elorabethel125@gmail.com" 
+                className="border border-accent text-accent hover:bg-accent hover:text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+              >
+                Send Email
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Rules */}
+        <div className="mt-16 card bg-yellow-600 bg-opacity-20 border border-yellow-600">
+          <h3 className="text-2xl font-bold mb-6 text-center">📋 Important Rules & Requirements</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h4 className="font-semibold mb-3">Withdrawal Requirements:</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li>• Minimum withdrawal: 5 USDT</li>
+                <li>• Must have 5+ active sign-in days</li>
+                <li>• Processing time: 24-48 hours</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-3">Referral Requirements:</h4>
+              <ul className="space-y-2 text-gray-300">
+                <li>• 0.5 USDT per successful referral</li>
+                <li>• Minimum withdrawal: 10 USDT</li>
+                <li>• Need 5+ referrals with VIP plans</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

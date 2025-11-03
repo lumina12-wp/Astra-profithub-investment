@@ -1,0 +1,101 @@
+
+```javascript
+ - Frontend API utilities
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+
+async function handleResponse(response) {
+  if (!response.ok) {
+    const errorDetail = await response.text(); // Optional: Get error detail from response
+    throw new Error(`HTTP Error: ${response.status}. ${errorDetail}`);
+  }
+  return response.json();
+}
+
+export const api = {
+  // Authentication
+  async register(userData) {
+    const response = await fetch(`${API_BASE_URL}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(userData),
+    });
+    return handleResponse(response);
+  },
+
+  async login(credentials) {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+    });
+    return handleResponse(response);
+  },
+
+  // User profile
+  async getProfile(token) {
+    const response = await fetch(`${API_BASE_URL}/user/profile`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    return handleResponse(response);
+  },
+
+  // Daily signin
+  async dailySignin(token) {
+    const response = await fetch(`${API_BASE_URL}/user/daily-signin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return handleResponse(response);
+  },
+
+  // Investments
+  async getInvestmentPlans(token) {
+    const response = await fetch(`${API_BASE_URL}/investments/investment-plans`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    return handleResponse(response);
+  },
+
+  async createInvestment(token, planId) {
+    const response = await fetch(`${API_BASE_URL}/investments/investments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ planId }),
+    });
+    return handleResponse(response);
+  },
+
+  // Deposits
+  async createDeposit(token, depositData) {
+    const response = await fetch(`${API_BASE_URL}/deposits/deposits`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(depositData),
+    });
+    return handleResponse(response);
+  },
+
+  // Withdrawals
+  async createWithdrawal(token, withdrawalData) {
+    const response = await fetch(`${API_BASE_URL}/withdrawals/withdrawals`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(withdrawalData),
+    });
+    return handleResponse(response);
+  },
+};
+```
+

@@ -1,0 +1,112 @@
+// app/admin/login/page.js
+'use client'
+import { useState } from 'react'
+import { useAuth } from '../../../components/AuthContext'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+
+export default function AdminLogin() {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
+  const router = useRouter()
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    // Check admin credentials
+    if (formData.username === 'EloraB' && formData.password === 'Li2025y#') {
+      const adminData = {
+        id: 'admin',
+        username: 'EloraB',
+        role: 'admin',
+        loginTime: new Date().toISOString()
+      }
+      login(adminData)
+      router.push('/admin/dashboard')
+    } else {
+      setError('Invalid admin credentials')
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div className="card max-w-md w-full">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-2">Admin Login</h1>
+          <p className="text-gray-400">Astra Profit Hub Administration</p>
+        </div>
+        
+        {error && (
+          <div className="bg-red-600 text-white p-3 rounded-lg mb-4">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium mb-2">Admin Username</label>
+            <input
+              type="text"
+              name="username"
+              required
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter admin username"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Password</label>
+            <input
+              type="password"
+              name="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter admin password"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full btn-primary py-3 disabled:opacity-50"
+          >
+            {loading ? 'Signing In...' : 'Admin Login'}
+          </button>
+        </form>
+
+        <div className="mt-6 p-4 bg-primary rounded-lg">
+          <p className="text-sm text-center">
+            <strong>Demo Credentials:</strong><br/>
+            Username: <strong>EloraB</strong><br/>
+            Password: <strong>Li2025y#</strong>
+          </p>
+        </div>
+
+        <p className="text-center mt-6 text-gray-400">
+          <Link href="/" className="text-accent hover:underline">
+            ← Back to Home
+          </Link>
+        </p>
+      </div>
+    </div>
+  )
+}

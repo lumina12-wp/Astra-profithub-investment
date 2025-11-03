@@ -1,0 +1,128 @@
+// app/account/signin/page.js
+'use client'
+import { useState } from 'react'
+import { useAuth } from '../../../components/AuthContext'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+
+export default function SignIn() {
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { login } = useAuth()
+  const router = useRouter()
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+
+    // Check for admin credentials
+    if (formData.username === 'EloraB' && formData.password === 'Li2025y#') {
+      const adminData = {
+        id: 'admin',
+        username: 'EloraB',
+        role: 'admin'
+      }
+      login(adminData)
+      router.push('/admin/dashboard')
+      return
+    }
+
+    // Regular user login (simulated)
+    try {
+      const userData = {
+        id: 1,
+        username: formData.username,
+        balance: 150,
+        referralBonus: 2.5,
+        referrals: 3,
+        activeDays: 7,
+        investments: [
+          { plan: 'VIP 1', amount: 5, startDate: '2024-01-01', returns: 3 }
+        ],
+        referralCode: 'REF12345'
+      }
+      
+      login(userData)
+      router.push('/dashboard')
+    } catch (err) {
+      setError('Invalid credentials')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center py-12 px-4">
+      <div className="card max-w-md w-full">
+        <h1 className="text-3xl font-bold text-center mb-8">Sign In</h1>
+        
+        {error && (
+          <div className="bg-red-600 text-white p-3 rounded-lg mb-4">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium mb-2">Username</label>
+            <input
+              type="text"
+              name="username"
+              required
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter your username"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2">Password</label>
+            <input
+              type="password"
+              name="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-accent"
+              placeholder="Enter your password"
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full btn-primary py-3 disabled:opacity-50"
+          >
+            {loading ? 'Signing In...' : 'Sign In'}
+          </button>
+        </form>
+
+        <div className="mt-6 p-4 bg-primary rounded-lg">
+          <p className="text-sm text-center">
+            Admin? Use username: <strong>EloraB</strong> and password: <strong>Li2025y#</strong>
+          </p>
+        </div>
+
+        <p className="text-center mt-6 text-gray-400">
+          Don't have an account?{' '}
+          <Link href="/account/signup" className="text-accent hover:underline">
+            Sign Up
+          </Link>
+        </p>
+      </div>
+    </div>
+  )
+}

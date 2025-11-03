@@ -1,0 +1,142 @@
+javascript
+'
+import { useAuth } from '../../../components/AuthContext'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+export default function AdminDashboard() {
+  const { user } = useAuth()
+  const router = useRouter()
+  
+  // State for statistics and loading/error handling
+  const [stats, setStats] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    if (!user || user.role !== 'admin') {
+      router.push('/admin/login')
+    } else {
+      // Fetch statistics from API
+      fetchStats()
+    }
+  }, [user, router])
+
+  const fetchStats = async () => {
+    try {
+      const response = await fetch('/api/stats')
+      if (!response.ok) throw new Error('Failed to fetch stats.')
+      const data = await response.json()
+      setStats(data)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto"></div>
+          <p className="mt-4">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500">Error: {error}</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user || user.role !== 'admin') {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto"></div>
+          <p className="mt-4">Redirecting...</p>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
+      <p className="text-gray-400 mb-8">Welcome back, {user.username}</p>
+
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div className="card">
+          <h3 className="text-2xl font-bold text-accent mb-2">{stats.totalUsers}</h3>
+          <p className="text-gray-400">Total Users</p>
+        </div>
+        <div className="card">
+          <h3 className="text-2xl font-bold text-accent mb-2">{stats.activeInvestments}</h3>
+          <p className="text-gray-400">Active Investments</p>
+        </div>
+        <div className="card">
+          <h3 className="text-2xl font-bold text-accent mb-2">{stats.totalDeposits} USDT</h3>
+          <p className="text-gray-400">Total Deposits</p>
+        </div>
+        <div className="card">
+          <h3 className="text-2xl font-bold text-accent mb-2">{stats.pendingWithdrawals}</h3>
+          <p className="text-gray-400">Pending Withdrawals</p>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="card">
+          <h3 className="text-xl font-semibold mb-4">User Management</h3>
+          <p className="text-gray-400 mb-4">Manage users and view accounts</p>
+          <button className="btn-primary w-full" onClick={() => router.push('/admin/users')}>View Users</button>
+        </div>
+
+        <div className="card">
+          <h3 className="text-xl font-semibold mb-4">Withdrawal Approvals</h3>
+          <p className="text-gray-400 mb-4">Process pending withdrawals</p>
+          <button className="btn-primary w-full" onClick={() => router.push('/admin/withdrawals')}>View Requests</button>
+        </div>
+
+        <div className="card">
+          <h3 className="text-xl font-semibold mb-4">Investment Plans</h3>
+          <p className="text-gray-400 mb-4">Manage VIP investment plans</p>
+          <button className="btn-primary w-full" onClick={() => router.push('/admin/investment-plans')}>Manage Plans</button>
+        </div>
+      </div>
+
+      {/* Recent Activity */}
+      <div className="card mt-8">
+        <h3 className="text-xl font-semibold mb-4">Recent Activity</h3>
+        <div className="space-y-3">
+          {/* Example recent activity items */}
+          <div className="flex justify-between items-center p-3 bg-gray-800 rounded">
+            <div>
+              <p className="font-semibold">New Investment</p>
+              <p className="text-sm text-gray-400">User: john_doe - VIP 4 Plan</p>
+            </div>
+            <span className="text-accent">+20 USDT</span>
+          </div>
+          <div className="flex justify-between items-center p-3 bg-gray-800 rounded">
+            <div>
+              <p className="font-semibold">Withdrawal Request</p>
+              <p className="text-sm text-gray-400">User: jane_smith - 15 USDT</p>
+            </div>
+            <span className="text-yellow-500">Pending</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+
